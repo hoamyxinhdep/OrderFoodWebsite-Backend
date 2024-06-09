@@ -6,7 +6,7 @@ import myUserRouter from "./routes/MyUserRoutes";
 import myRestaurantRouter from "./routes/MyRestaurantRoute";
 import restaurantRouter from "./routes/RestaurantRoute";
 import { v2 as cloudinary } from "cloudinary";
-
+import orderRouter from "./routes/OrderRoute";
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
   .then(() => {
@@ -22,6 +22,7 @@ cloudinary.config({
 });
 const app = express();
 app.use(cors());
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
 app.use(express.json());
 
 app.get("/health", async (req: Request, res: Response) => {
@@ -30,6 +31,7 @@ app.get("/health", async (req: Request, res: Response) => {
 app.use("/api/my/user", myUserRouter);
 app.use("/api/my/restaurant", myRestaurantRouter);
 app.use("/api/restaurant", restaurantRouter);
+app.use("/api/order", orderRouter);
 app.listen(7000, () => {
   console.log("Server is running on port 7000");
 });
