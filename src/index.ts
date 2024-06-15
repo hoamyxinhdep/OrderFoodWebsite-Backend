@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import myUserRouter from "./routes/MyUserRoutes";
 import myRestaurantRouter from "./routes/MyRestaurantRoute";
 import restaurantRouter from "./routes/RestaurantRoute";
+import reviewRoute from "./routes/ReviewRoute";
 import { v2 as cloudinary } from "cloudinary";
 import orderRouter from "./routes/OrderRoute";
 mongoose
@@ -32,6 +33,7 @@ app.use("/api/my/user", myUserRouter);
 app.use("/api/my/restaurant", myRestaurantRouter);
 app.use("/api/restaurant", restaurantRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/review", reviewRoute);
 app.listen(7000, () => {
   console.log("Server is running on port 7000");
 });
