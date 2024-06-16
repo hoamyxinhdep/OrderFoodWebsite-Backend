@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Review from "../model/reviews";
+import Restaurant from "../model/restaurant";
 
 const getReview = async (req: Request, res: Response) => {
     try {
@@ -98,5 +99,40 @@ const deleteReview = async (req: Request, res: Response) => {
     }
 };
 
-export default { getReview, getReviews, comment,  editReview, deleteReview, getReviewsByRestaurant };
+const reply = async (req: Request, res: Response) => {
+
+    const userId = req.userId; 
+    const { reply } = req.body;
+
+    try {
+        const review = await Review.findById(req.params.id);
+
+        if (!review) {
+          res.status(404).json({ error: 'Review not found' });
+          return;
+        }
+        if (!review.restaurant) {
+            return res.status(400).json({ message: "Review is not associated with any restaurant" });
+        }
+        const restaurant = await Restaurant.findById(review.restaurant._id);
+        if (!restaurant) {
+            return res.status(404).json({ message: "Restaurant not found" });
+        }
+        if (!restaurant.user) {
+            return res.status(400).json({ message: "User is not associated with any restaurant" });
+        }
+        if (restaurant.user.toString() !== userId) {
+            res.status(403).json({ error: 'You are not authorized to reply this review' });
+            return;
+          }
+        review.reply = reply;
+        await review.save();
+
+        res.status(200).json(review);
+    } catch (error) {
+        res.status(500).json({ message: "Error replying to review", error });
+    }
+};
+
+export default { getReview, getReviews, comment,  editReview, deleteReview, getReviewsByRestaurant, reply };
 
