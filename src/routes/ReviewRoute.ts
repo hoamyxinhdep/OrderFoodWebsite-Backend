@@ -6,25 +6,22 @@ const router = express.Router();
 
   router.get(
     "/:id",
-    jwtCheck, jwtParse,
     ReviewController.getReview
   );
 
   router.get(
-    "/",
-    jwtCheck, jwtParse,
+    "/",   
     ReviewController.getReviews
   );
 
   router.get(
     "/restaurant/:id",
-    jwtCheck, jwtParse,
     ReviewController.getReviewsByRestaurant
   );
 
   router.post(
     "/:id",
-    jwtCheck, jwtParse,
+    jwtCheck,
     ReviewController.comment
   );
 

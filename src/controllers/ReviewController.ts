@@ -52,7 +52,6 @@ const comment = async (req: Request, res: Response) => {
 };
 
 const editReview = async (req: Request, res: Response) => {
-    console.log(req.params.id)
     const { comment } = req.body;
     const userId = req.userId;
     try{
@@ -68,6 +67,7 @@ const editReview = async (req: Request, res: Response) => {
         return;
         }
         review.comment = comment;
+        await review.save();
         res.status(200).json(review);
     }catch (error) {
     console.log(error);
@@ -101,7 +101,7 @@ const deleteReview = async (req: Request, res: Response) => {
 };
 
 const reply = async (req: Request, res: Response) => {
-    const userId = "664c5f1ac95de79f1e524847";
+    const userId = req.userId;
     const { text } = req.body;
   
     try {
