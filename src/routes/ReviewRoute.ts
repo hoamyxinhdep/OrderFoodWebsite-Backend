@@ -19,22 +19,16 @@ const router = express.Router();
     ReviewController.getReviewsByRestaurant
   );
 
-  router.post(
-    "/:id",
-    jwtCheck,
-    ReviewController.comment
-  );
-
-  router.patch(
-    "/update/:id",
-    jwtCheck, jwtParse,
-    ReviewController.editReview
-  );
-
   router.delete(
     "/delete/:id",
     jwtCheck, jwtParse,
     ReviewController.deleteReview
+  );
+
+  router.post(
+    "/restaurants/:id",
+    jwtCheck, jwtParse,
+    ReviewController.comment
   );
 
   router.post(

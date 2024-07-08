@@ -41,37 +41,21 @@ const getReviewsByRestaurant = async (req: Request, res: Response) => {
 };
 
 const comment = async (req: Request, res: Response) => {
-    const id = req.userId;
-    const newReview = new Review({user: id, restaurant: req.params.id, ...req.body }, );
-    try{
-        const review = await newReview.save();
-        res.status(201).json(review);
-    }catch (error) {
-        res.status(500).json({ message: "Error fetching review" });
-    }
-};
+  const userId = req.userId;
+  const { comment } = req.body;
+  const restaurantId = req.params.id;
 
-const editReview = async (req: Request, res: Response) => {
-    const { comment } = req.body;
-    const userId = req.userId;
-    try{
-        const review = await Review.findById(req.params.id);
+  try {
+      const review = await Review.findOneAndUpdate(
+          { user: userId, restaurant: restaurantId },
+          { user: userId, restaurant: restaurantId, comment: comment },
+          { new: true, upsert: true }
+      );
 
-        if (!review) {
-        res.status(404).json({ error: 'Review not found' });
-        return;
-        }
-
-        if (review.user.toString() !== userId) {
-        res.status(403).json({ error: 'You are not authorized to edit this review' });
-        return;
-        }
-        review.comment = comment;
-        await review.save();
-        res.status(200).json(review);
-    }catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+      res.status(200).json(review);
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Có lỗi xảy ra" });
   }
 };
 
@@ -87,7 +71,7 @@ const deleteReview = async (req: Request, res: Response) => {
         }
     
         if (review.user.toString() !== userId) {
-          res.status(403).json({ error: 'You are not authorized to delete this review' });
+          res.status(403).json({ error: 'You are not authorized to delete this review day nhaaaaa' });
           return;
         }
     
@@ -135,5 +119,5 @@ const reply = async (req: Request, res: Response) => {
   };
   
 
-export default { getReview, getReviews, comment,  editReview, deleteReview, getReviewsByRestaurant, reply };
+export default { getReview, getReviews, comment,  deleteReview, getReviewsByRestaurant, reply };
 
