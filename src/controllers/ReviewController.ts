@@ -71,7 +71,7 @@ const deleteReview = async (req: Request, res: Response) => {
         }
     
         if (review.user.toString() !== userId) {
-          res.status(403).json({ error: 'You are not authorized to delete this review day nhaaaaa' });
+          res.status(403).json({ error: 'You are not authorized to delete this review' });
           return;
         }
     
