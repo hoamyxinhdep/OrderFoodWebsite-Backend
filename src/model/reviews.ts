@@ -24,7 +24,9 @@ const reviewSchema = new mongoose.Schema({
     ref: "Restaurant",
     required: true,
   },
-  comment: String,
+  comment: {type: String,
+    required: true,
+  },
   replies: [replySchema],
 }, { timestamps: true });
 
