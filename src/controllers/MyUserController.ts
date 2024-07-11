@@ -35,7 +35,7 @@ const createCurrentUser = async (req: Request, res: Response) => {
 };
 const updateCurrentUser = async (req: Request, res: Response) => {
   try {
-    const { name, addressLine1, country, city } = req.body;
+    const { name, addressLine1, country, city,phone } = req.body;
     const user = await User.findById(req.userId);
 
     if (!user) {
@@ -45,6 +45,7 @@ const updateCurrentUser = async (req: Request, res: Response) => {
     user.addressLine1 = addressLine1;
     user.country = country;
     user.city = city;
+    user.phone = phone;
     await user.save();
     res.send(user);
   } catch (error) {

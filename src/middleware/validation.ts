@@ -21,6 +21,14 @@ export const validateMyUserRequest = [
     .withMessage("AddressLine1 must be a string"),
   body("city").isString().notEmpty().withMessage("City must be a string"),
   body("country").isString().notEmpty().withMessage("Country must be a string"),
+  body("phone")
+    .isString()
+    .notEmpty()
+    .withMessage("Phone must be a string")
+    .matches(/^[0-9]+$/)
+    .withMessage("Phone must contain only numbers")
+    .isLength({ min: 10, max: 15 })
+    .withMessage("Phone must be between 10 and 15 characters long"), // Đã thêm điều kiện kiểm tra chi tiết cho phone
   handleValidationErrors,
 ];
 
